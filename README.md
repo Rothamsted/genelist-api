@@ -83,7 +83,7 @@ The **mandatory arguments** are:
 If the User has either a standard or Easybuild terminal set up with requests installed, they can run the following command. This will reproduce the directories: ./example_list which contains results.txt summarising the Knetminer findings on genes provided. 
 
 ```
-python genepage-insight.py example_list.txt mock_keyword_list.txt 2
+python genepage-insight.py example_list.txt mock_keyword_list.txt wheat
 ```
 
 #### 6. Output information
@@ -105,6 +105,7 @@ Keywan-Hassani Pak
 
 
 Colin Li
+
 
 Joseph Hearnshaw  
 
