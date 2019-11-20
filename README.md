@@ -1,24 +1,20 @@
 # genelist-api
 
 ## Overview
-This program will query KnetMiner based upon your user provided genes (must be seperated by a new line and contain ONLY your genes) and user provided keywords (same format as genes), which will return the knetscore, cromosome positions, and KnetMiner API links for all matching genes found in KnetMiner. This script thus so far only works for rice, wheat, and araboidopsis. 
+This script will query the KnetMiner Knowledge Graph with a user provided gene list (one gene id per line, was tested with upto 3000 wheat genes) and user provided keyword file (one keyword per line, tested with upto 10 keywords). It returns the knetscore, genome location, and KnetMiner genepage URL for each user gene that can be associated with any of the keywords. This script thus so far only works for rice, wheat, and araboidopsis. 
 
 
 ## Prerequisites
-The script can run on any computer with Python3+. 
-
-However, you may need to install the following, if not already installed:
+The script requires Python3+ with following dependecies:
 
 * pandas
 * numpy
 * argparse
 * requests
 
-Simply perform a pip install, or use your environment manager to install these dependencies. 
+* Python virtual environments, e.g. pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of the dependencies through pip. 
 
-* The program does not require heavy computational resources. However, as the user may prefer high performance computing the instructions on how to set up and run the program on a node managed by the Easybuild framework has been included below. The User should read set up instructions specific to any other HPC frameworks.
-
-* Python virtual environments, e.g. pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of requests, numpy, argparse, and pandas through pip. 
+* The script uses the KnetMiner REST API and therefore requires an internet connection.
 
 #### 1.Downloading the repository
 Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directory named gwas-gene-discovery containing identical contents to the GitHub repository.
