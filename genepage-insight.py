@@ -116,7 +116,6 @@ def summary():
 
         knetgenes, knetscores = list(genetable[u'ACCESSION']), list(genetable[u'SCORE'])
         knetchro, knetstart = list(genetable[u'CHRO']), list(genetable[u'START'])
-        print("knet", str(knetgenes))
         genes = set(genes).intersection(knetgenes) # Only keep matching genes
 
         splitNetworkView = [i.split("list=", 1)[1] for i in network_view]  #Split the network network_view to find matches
