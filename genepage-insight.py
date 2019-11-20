@@ -10,7 +10,6 @@ import shutil
 import sys
 import pandas as pd
 import numpy as np
-# import grequests
 import resource
 from itertools import islice
 import pprint
@@ -121,10 +120,10 @@ def summary():
         genetable = pd.DataFrame(genetable[1:,:], columns=genetable[0,:])
         genesUpper=list(map(str.upper, genes)) # Make the genes uppercase
         genetable=genetable.loc[genetable[u'ACCESSION'].isin(genesUpper)] # Update the table so we only have matching genes
-        genes = list(filter(lambda x: x not in genes, knetgenes)) # Only keep matching genes
 
         knetgenes, knetscores = list(genetable[u'ACCESSION']), list(genetable[u'SCORE'])
         knetchro, knetstart = list(genetable[u'CHRO']), list(genetable[u'START'])
+        genes = list(filter(lambda x: x not in genes, knetgenes)) # Only keep matching genes
 
         splitNetworkView = [i.split("list=", 1)[1] for i in network_view]  #Split the network network_view to find matches
         splitNetworkView = [i.split("&", 1)[0] for i in splitNetworkView]
