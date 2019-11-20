@@ -57,7 +57,7 @@ To install any of the required modules, please execute the following:
 #### 4.Execution of script
 The command:
 ```
-python genepage_insight.py -h
+python3 genepage_insight.py -h
 ```
 Returns the help page
 
@@ -84,21 +84,11 @@ The Knetscore column assesses the relevance of the gene to the trait or traits o
 The network view column contains URL addresses to networks of Knetminer which displays related orthologues, other traits encoded by the gene and publications etc. 
 
 
-## External tools included
-[Knetminer V3.0](https://knetminer.rothamsted.ac.uk/KnetMiner/)
-
-
-
 ## Authors
-Keywan-Hassani Pak
+[Keywan-Hassani Pak](https://github.com/KeywanHP)
 
 
-Colin Li
+[Colin Li](https://github.com/Haolin-Colin-Li)
 
 
-Joseph Hearnshaw  
-
-
-
-## Acknowledgement
-Bioinformatics Department, [Computational and Analytical Sciences](https://www.rothamsted.ac.uk/computational-and-analytical-sciences), Rothamsted Resarch
+[Joseph Hearnshaw](https://github.com/josephhearnshaw)
