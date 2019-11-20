@@ -1,7 +1,7 @@
 # genelist-api
 
 ## Overview
-This script will query the KnetMiner Knowledge Graph with a user provided gene list (one gene id per line) and a user provided keyword file (one keyword per line). It returns the knetscore, genome location, and KnetMiner genepage URL for each user gene that can be associated with any of the keywords. The script was tested with upto 3000 wheat genes and 10 keywords. It currently only supports rice, wheat and araboidopsis. 
+This script will query the KnetMiner Knowledge Graph with a user provided gene list (one gene ID per line) and a user provided keyword file (one keyword per line). It returns the knetscore, genome location, and KnetMiner genepage URL for each user gene that can be associated with any of the keywords. The script was tested with upto 3000 wheat genes and 10 keywords. It currently only supports rice, wheat and araboidopsis. 
 
 
 ## Prerequisites
@@ -20,6 +20,12 @@ The script requires Python3+ with following dependecies:
 
 ### 1.Downloading the repository
 Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directory named gwas-gene-discovery containing identical contents to the GitHub repository.
+
+To clone this repository via git (command-line), simple execute the following:
+
+``` git clone https://github.com/Rothamsted/genelist-api.git``` 
+
+You'll find all the relevant files in the genelist-api folder, cloned to whatever directory you cloned it in. 
 
 ### 2. Accessing compute node on Easybuild
 The user can check available compute nodes by the command:
