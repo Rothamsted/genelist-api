@@ -5,7 +5,7 @@ This program will query KnetMiner based upon your user provided genes (must be s
 
 
 ## Prerequisites
-* The script can run on any computer with Python3+. 
+The script can run on any computer with Python3+. 
 
 However, you may need to install the following, if not already installed:
 
@@ -18,7 +18,7 @@ Simply perform a pip install, or use your environment manager to install these d
 
 * The program does not require heavy computational resources. However, as the user may prefer high performance computing the instructions on how to set up and run the program on a node managed by the Easybuild framework has been included below. The User should read set up instructions specific to any other HPC frameworks.
 
-* Python virtual environments, e.g. virtualenv for python2 or pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of requests, numpy, argparse, and pandas through pip. 
+* Python virtual environments, e.g. pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of requests, numpy, argparse, and pandas through pip. 
 
 #### 1.Downloading the repository
 Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directory named gwas-gene-discovery containing identical contents to the GitHub repository.
