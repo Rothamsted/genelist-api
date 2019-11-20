@@ -18,7 +18,7 @@ Simply perform a pip install, or use your environment manager to install these d
 
 * The program does not require heavy computational resources. However, as the user may prefer high performance computing the instructions on how to set up and run the program on a node managed by the Easybuild framework has been included below. The User should read set up instructions specific to any other HPC frameworks.
 
-* Python virtual environments, e.g. virtualenv for python2 or pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of requests, numpy and pandas through pip. See **4.Installing python request library** in **Instructions** on how to do this.
+* Python virtual environments, e.g. virtualenv for python2 or pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of requests, numpy, argparse, and pandas through pip. 
 
 #### 1.Downloading the repository
 Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directory named gwas-gene-discovery containing identical contents to the GitHub repository.
@@ -50,6 +50,9 @@ The user can return to the virtual environment in a new session after logging ou
 module load <Python version>
 source </path to env>/bin/activate/
 ```
+To install any of the required modules, please execute the following:
+
+```pip install <module_name>``` 
   
 #### 4.Execution of script
 The command:
