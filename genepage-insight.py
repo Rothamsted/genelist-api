@@ -105,7 +105,6 @@ def summary():
             link="http://knetminer.rothamsted.ac.uk/{}/genome?keyword={}".format(species, keyw)
             print("The API request being performed is: {}".format(link))
             r=requests.get(link)
-            print(r.content)
             decoded = decode(r)
 
         print("Filtering results, please wait...")
@@ -116,7 +115,7 @@ def summary():
 
         knetgenes, knetscores = list(genetable[u'ACCESSION']), list(genetable[u'SCORE'])
         knetchro, knetstart = list(genetable[u'CHRO']), list(genetable[u'START'])
-        genes = set(genes).intersection(knetgenes) # Only keep matching genes
+        genes = set(genesUpper).intersection(knetgenes) # Only keep matching genes
 
         splitNetworkView = [i.split("list=", 1)[1] for i in network_view]  #Split the network network_view to find matches
         splitNetworkView = [i.split("&", 1)[0] for i in splitNetworkView]
@@ -127,11 +126,11 @@ def summary():
 
         knetdict=dict(zip(knetgenes, knetscores)) # Map the genes to SNPs via a dictionary.
         if len(genes) < 20:
-            print("Displaying knetscores for every gene.")
-            pprint.pprint(knetdict)
+            print("Displaying knetscores for 5 genes.")
+            pprint.pprint(list(islice(knetdict.items(), 5)))
         else:
             print("Displaying a snippet of your knetscores for every gene:")
-            pprint.pprint(list(islice(knetdict.items(), 20)))
+            pprint.pprint(list(islice(knetdict.items(), 5)))
         ordered_score=[]
         for index, i in enumerate(genes):
             i=i.upper() #convert gene id to upper case to avoid sensitivity issues.
