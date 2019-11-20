@@ -9,7 +9,7 @@ The url leads the user into Knetminer's network view which accelerates research 
 ## Prerequisites
 * The script can run on any computer with Python3+. 
 
-However, you will need to install the following, if not already installed:
+However, you may need to install the following, if not already installed:
 
 * future
 * pandas
@@ -43,15 +43,14 @@ srun --pty bash -i
 ```
 
 #### 3.Setting up a virtual environment on Easybuild
-A virtual environment is required for pip installation of numpy, pandas and requests.
+A virtual environment is required for pip installation of numpy, pandas, and requests.
 Check all the available versions of python currently on cluster:
 ```
 module avail Python
 ```
-After the user has decided on a version of Python2 that is 2.7 and above or Python3 execute the commands below.
 
 ```
-module load <Python version>
+module load <Python3 version>
 virtualenv <name of Python virtual environment>
 source </path to env>/bin/activate/
 ```
