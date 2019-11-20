@@ -1,33 +1,24 @@
 # genelist-api
 
 ## Overview
-The instructions below provide users with a copy of this program which can be directly used or adapted for their own project. The program require 2 plain text files, one containing a list of geneIDs and the other with a list of keywords describing the phenotypes the user suspects the genes have influence over. The script can work for either rice, wheat or arabidopsis.
+This program will query KnetMiner based upon your user provided genes (must be seperated by a new line and contain ONLY your genes) and user provided keywords (same format as genes), which will return the knetscore, cromosome positions, and KnetMiner API links for all matching genes found in KnetMiner. This script thus so far only works for rice, wheat, and araboidopsis. 
 
-The tabular output would provide the users with the chromosome and start position for every gene, a knetscore which assesses the relevance of each gene to the specified phenotype or phenotypes and a Knetminer genepage url per gene.
-The url leads the user into Knetminer's network view which accelerates research by outlining orthology of the gene as well as traits and publications related to it.
 
 ## Prerequisites
 * The script can run on any computer with Python3+. 
 
 However, you may need to install the following, if not already installed:
 
-* future
 * pandas
 * numpy
 * argparse
-* json
 * requests
-* itertools
 
 Simply perform a pip install, or use your environment manager to install these dependencies. 
 
 * The program does not require heavy computational resources. However, as the user may prefer high performance computing the instructions on how to set up and run the program on a node managed by the Easybuild framework has been included below. The User should read set up instructions specific to any other HPC frameworks.
 
 * Python virtual environments, e.g. virtualenv for python2 or pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of requests, numpy and pandas through pip. See **4.Installing python request library** in **Instructions** on how to do this.
-
-
-## Tutorial and usage instructions
-This is a quick tutorial to get the user started by reproducing the outputs of map_snp_to_gene.py for 2 different GWAS result spreadsheets, GAPIT.MLM.DTF.GWAS.Results.csv and GAPIT.MLM.blupWidth.GWAS.Results.csv as seen in the 2 directories of the same names. The tutorial generally assumes the user is using linux managed by Easybuild.
 
 #### 1.Downloading the repository
 Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directory named gwas-gene-discovery containing identical contents to the GitHub repository.
@@ -48,7 +39,7 @@ Check all the available versions of python currently on cluster:
 ```
 module avail Python
 ```
-
+**Note that the virtualenv is only required if you lack permissions to install**
 ```
 module load <Python3 version>
 virtualenv <name of Python virtual environment>
