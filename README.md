@@ -79,7 +79,7 @@ There are four flags that can be provided, given as follows:
 * ```-o``` OR ```-output``` This corresponds to your desired output directory, though it's non essential. If you don't provide this, a file will be created using your gene file name & appending ```_output``` to it, where your results & dependent files will be found.
 
 ```
-python genepage-insight.py -g example_list.txt -k mock_keyword_list.txt -s wheat -o /home/$USER/test_output.txt
+python3 genepage-insight.py -g example_list.txt -k mock_keyword_list.txt -s wheat -o /home/$USER/test_output.txt
 ```
 
 #### 5. Output information
