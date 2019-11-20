@@ -87,16 +87,7 @@ def summary():
         counter, total = 0, 0
         for i in genes:
             link="http://knetminer.rothamsted.ac.uk/{}/genepage?list={}&keyword={}".format(species, i, keyw)
-            if len(genes) > 100:
-                network_view.append(link) # We don't need ot ensure the URL works at this stage as we'll filter by gene name later anyway. This will save time.
-            else:
-                r=requests.get(link)
-                network_view.append(r.url)
-                counter+=1
-                total+=1
-                if counter == 50:
-                    print('Performed {} requests out of {}'.format(total, len(genes)))
-                    counter = 0
+            network_view.append(link) # We don't need ot ensure the URL works at this stage as we'll filter by gene name later anyway. This will save time.
 
         #obtaining knetscores for genes
         print("Your provided traits are as follows:\n\n")
@@ -112,7 +103,9 @@ def summary():
             print("\n\nGene length is over 450, I'll query knetminer for ALL returning results and then filter them instead")
             print("This may take a while, so please be patient\n")
             link="http://knetminer.rothamsted.ac.uk/{}/genome?keyword={}".format(species, keyw)
+            print("The API request being performed is: {}".format(link))
             r=requests.get(link)
+            print(r.content)
             decoded = decode(r)
 
         print("Filtering results, please wait...")
@@ -123,7 +116,8 @@ def summary():
 
         knetgenes, knetscores = list(genetable[u'ACCESSION']), list(genetable[u'SCORE'])
         knetchro, knetstart = list(genetable[u'CHRO']), list(genetable[u'START'])
-        genes = list(filter(lambda x: x not in genes, knetgenes)) # Only keep matching genes
+        print("knet", str(knetgenes))
+        genes = set(genes).intersection(knetgenes) # Only keep matching genes
 
         splitNetworkView = [i.split("list=", 1)[1] for i in network_view]  #Split the network network_view to find matches
         splitNetworkView = [i.split("&", 1)[0] for i in splitNetworkView]
@@ -148,8 +142,10 @@ def summary():
                 print("Gene " + i + " with index " + index + "not found in the KnetMiner dictionary")
                 pass # Skip any keys that shouldn't be present, though we should never arrive at this keyError anyway as we take care of this earlier when filtering the genes
 
-        ordered_score, knetchro = filtered_summary[u'knetscore'], filtered_summary[u'chromosome']
-        knetstart, updatedNetworkView = filtered_summary[u'start_position'], filtered_summary[u'network_view']
+        filtered_summary[u'knetscore'] = ordered_score
+        filtered_summary[u'chromosome'] = knetchro
+        filtered_summary[u'start_position'] = knetstart
+        filtered_summary[u'network_view'] = updatedNetworkView
 
         if len(updatedNetworkView) < 20:
             print("These are your genepage URLS. They're also available in results.txt.")
