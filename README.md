@@ -11,7 +11,7 @@ The url leads the user into Knetminer's network view which accelerates research 
 
 However, you will need to install the following, if not already installed:
 
-*__future__
+* future
 * pandas
 * numpy
 * argparse
