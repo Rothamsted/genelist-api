@@ -25,50 +25,44 @@ Clone or download this repository using the green "Clone or Download" button. To
 
 You'll find all the relevant files in the genelist-api folder, cloned to whatever directory you cloned it in. 
 
-### Accessing compute node on Easybuild
-The user can check available compute nodes by the command:
-```
-sinfo 
-```
-If available, login to a standard compute node on Rothhpc4 using:
+### Setting up Python and dependencies
+Login to a compute node:
 ```
 srun --pty bash -i
 ```
 
-### Setting up a virtual environment
-A virtual environment is required for pip installation of numpy, pandas, and requests.
-Check all the available versions of python currently on cluster:
+Check available versions of python:
 ```
 module avail Python
-```
-**Note that the virtualenv is only required if you lack permissions to install**
-```
 module load <Python3 version>
+```
+
+A virtualenv is required if you lack permissions to pip install
+```
 virtualenv <name of Python virtual environment>
 source </path to env>/bin/activate/
 ```
-The user can return to the virtual environment in a new session after logging out by:
-```
-module load <Python version>
-source </path to env>/bin/activate/
-```
-To install any of the required modules, please execute the following:
 
-```pip install <module_name>``` 
+Install missing python packages:
+```
+pip install pandas
+pip install numpy
+pip install argparse
+pip install requests
+``` 
   
-### Execution of script
-The command:
+### Run the script
+Change to the cloned/downloaded script folder. To see the script help page run:
 ```
 python3 genepage_insight.py -h
 ```
-Returns the help page
-
-Script arguments are:
+Supported arguments are:
 * ```-g``` OR ```--gene``` Text file which contains your list of gene ids or names (one per line)
 * ```-k``` OR ```--keywords``` Text file which contains the search terms or keywords of interest to you (one er line). 
 * ```-s``` OR ```--species``` Currently spporting ```rice```, ```wheat```, or ```arabidopsis``` (```ara```)
 * ```-o``` OR ```-output``` Output directory. If npt provided, a file will be created using your gene file name & appending ```_output``` to it, where your results & dependent files will be found.
 
+Example command:
 ```
 python3 genepage-insight.py -g example_list.txt -k mock_keyword_list.txt -s wheat -o /home/$USER/test_output.txt
 ```
