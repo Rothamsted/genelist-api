@@ -1,0 +1,9 @@
+heat
+temperature stimulus
+drought
+water deprivation
+nitrogen content
+gibberellin
+spermidine
+photosynthesis
+light sensitivity
