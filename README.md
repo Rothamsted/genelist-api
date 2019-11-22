@@ -1,8 +1,5 @@
-KnetMiner genome and genepage API
-
-## Overview
+# KnetMiner genome and genepage API
 This script will query the KnetMiner Knowledge Graph with a user provided gene list (one gene ID per line) and a user provided keyword file (one keyword per line). It returns the knetscore, genome location, and KnetMiner genepage URL for each user gene that can be associated with any of the keywords. The script was tested with upto 3000 wheat genes and 10 keywords. It currently only supports rice, wheat and araboidopsis. 
-
 
 ## Prerequisites
 The script requires Python3+ with following dependecies:
@@ -64,7 +61,7 @@ Supported arguments are:
 
 Example command:
 ```
-python3 genepage-insight.py -g example_list.txt -k mock_keyword_list.txt -s wheat -o /home/$USER/test_output.txt
+python3 genepage-insight.py -g example_list.txt -k keywords_heat.txt -s wheat -o /home/$USER/test_output.txt
 ```
 
 ## Output information
