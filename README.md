@@ -19,9 +19,7 @@ The script requires Python3+ with following dependecies:
 ## Execution
 
 ### 1.Downloading the repository
-Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directory named gwas-gene-discovery containing identical contents to the GitHub repository.
-
-To clone this repository via git (command-line), simple execute the following:
+Clone or download this repository using the green "Clone or Download" button. To clone this repository via git (command-line), simple execute the following:
 
 ``` git clone https://github.com/Rothamsted/genelist-api.git``` 
 
