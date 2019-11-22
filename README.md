@@ -1,4 +1,4 @@
-# KnetMiner genelist-api
+KnetMiner genome and genepage API
 
 ## Overview
 This script will query the KnetMiner Knowledge Graph with a user provided gene list (one gene ID per line) and a user provided keyword file (one keyword per line). It returns the knetscore, genome location, and KnetMiner genepage URL for each user gene that can be associated with any of the keywords. The script was tested with upto 3000 wheat genes and 10 keywords. It currently only supports rice, wheat and araboidopsis. 
@@ -60,7 +60,7 @@ Supported arguments are:
 * ```-g``` OR ```--gene``` Text file which contains your list of gene ids or names (one per line)
 * ```-k``` OR ```--keywords``` Text file which contains the search terms or keywords of interest to you (one er line). 
 * ```-s``` OR ```--species``` Currently spporting ```rice```, ```wheat```, or ```arabidopsis``` (```ara```)
-* ```-o``` OR ```-output``` Output directory. If npt provided, a file will be created using your gene file name & appending ```_output``` to it, where your results & dependent files will be found.
+* ```-o``` OR ```-output``` Output directory. If npt provided, a file will be created using your gene file name & appending '_output' to it, where your results & dependent files will be found.
 
 Example command:
 ```
