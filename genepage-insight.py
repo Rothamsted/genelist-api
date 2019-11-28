@@ -70,6 +70,9 @@ def splitNetworkViewUrls(genes, network_view):
 
 
 def knetScorer(genes, species, keyw):
+    """ Returns the KnetMiner JSON table containing the KnetScore with successful requests (containing the gene ID and keyword combination given)
+        REQUIRES: genes, species ID, and keyword list
+        RETURNS: decoded KnetMiner JSON table """
 
     genestr=(",").join(genes)
     link="http://knetminer.rothamsted.ac.uk/{}/genome?".format(species)
@@ -79,6 +82,9 @@ def knetScorer(genes, species, keyw):
     return decoded
 
 def queryAllKnetScorer(species, keyw):
+    """ Returns the KnetMiner JSON table containing the KnetScore, but instead pings KnetMiner for ALL genes related to he keyword (takes longer)
+        REQUIRES: genes, species ID, and keyword list
+        RETURNS: decoded KnetMiner JSON table """
 
     print("\n\nGoing to query knetminer for ALL returning results and then filter them\n")
     print("This may take a while, so please be patient\n")
