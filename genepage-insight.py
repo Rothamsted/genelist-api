@@ -57,6 +57,38 @@ def speciesDefine():
     print("Chosen knet is " + species)
     return species
 
+def splitNetworkViewUrls(genes, network_view):
+    """Splits the network view & keeps only netowrk URLs that match with the gene IDs
+    REQUIRES: gene list & network view list
+    RETURNS: the updated network view  list
+    """
+    splitNetworkView = [i.split("list=", 1)[1] for i in network_view]  #Split the network network_view to find matches
+    splitNetworkView = [i.split("&", 1)[0] for i in splitNetworkView]
+    splitNetworkView = [i.upper() for i in splitNetworkView]
+    networkMatchIndex = [splitNetworkView.index(i) for i in genes]
+    return [network_view[i] for i in networkMatchIndex]
+
+
+def knetScorer(genes, species, keyw):
+
+    genestr=(",").join(genes)
+    link="http://knetminer.rothamsted.ac.uk/{}/genome?".format(species)
+    parameters={"keyword":keyw, "list":genestr}
+    r=requests.get(link, params=parameters)
+    decoded = decode(r)
+    return decoded
+
+def queryAllKnetScorer(species, keyw):
+
+    print("\n\nGoing to query knetminer for ALL returning results and then filter them\n")
+    print("This may take a while, so please be patient\n")
+    link="http://knetminer.rothamsted.ac.uk/{}/genome?keyword={}".format(species, keyw)
+    print("The API request being performed is: {}".format(link))
+    r=requests.get(link)
+    decoded = decode(r)
+    return decoded
+
+
 def summary():
     """ Searches KnetMiner for the provided keywords & genes, truncating down to only the most relevant information.
         REQUIRES: User-provided arguments.
@@ -90,46 +122,35 @@ def summary():
             network_view.append(link) # We don't need ot ensure the URL works at this stage as we'll filter by gene name later anyway. This will save time.
 
         #obtaining knetscores for genes
-        print("Your provided traits are as follows:\n\n")
+        print("\nYour provided traits are as follows:\n\n")
         print(*pheno, sep=", ") # Collect all positional arguments into tuple and seperate by commas
-        if len(genes) < 450:
-            genestr=(",").join(genes)
-            link="http://knetminer.rothamsted.ac.uk/{}/genome?".format(species)
-            parameters={"keyword":keyw, "list":genestr}
-            r=requests.get(link, params=parameters)
-            #check if requests is successful
-            decoded = decode(r)
-        elif len(genes) > 450:
-            print("\n\nGene length is over 450, I'll query knetminer for ALL returning results and then filter them instead")
-            print("This may take a while, so please be patient\n")
-            link="http://knetminer.rothamsted.ac.uk/{}/genome?keyword={}".format(species, keyw)
-            print("The API request being performed is: {}".format(link))
-            r=requests.get(link)
-            decoded = decode(r)
+        if len(genes) <= 100:
+            decoded = knetScorer(genes, species, keyw)
+        elif len(genes) <= 200 and len(pheno) <= 10:
+            decoded = knetScorer(genes, species, keyw)
+        elif len(genes) >= 450:
+            decoded = queryAllKnetScorer(species, keyw)
+        else:
+            decoded = queryAllKnetScorer(species, keyw)
 
         print("Filtering results, please wait...")
-        genetable=np.array(decoded).reshape(len(decoded)//9, 9) #tabulate genetable into 9 columns.
-        genetable = pd.DataFrame(genetable[1:,:], columns=genetable[0,:])
-        genesUpper=list(map(str.upper, genes)) # Make the genes uppercase
-        genetable=genetable.loc[genetable[u'ACCESSION'].isin(genesUpper)] # Update the table so we only have matching genes
+        genetable = np.array(decoded).reshape(len(decoded)//9, 9) #tabulate genetable into 9 columns.
+        genetable = pd.DataFrame(genetable[1:, :], columns = genetable[0, :])
+        genesUpperList = list(map(str.upper, genes)) # Make the genes uppercase
+        genetable = genetable.loc[genetable[u'ACCESSION'].isin(genesUpperList)] # Update the table so we only have matching genes
 
         knetgenes, knetscores = list(genetable[u'ACCESSION']), list(genetable[u'SCORE'])
         knetchro, knetstart = list(genetable[u'CHRO']), list(genetable[u'START'])
-        genes = set(genesUpper).intersection(knetgenes) # Only keep matching genes
+        genes = set(genesUpperList).intersection(knetgenes) # Only keep matching genes
 
-        splitNetworkView = [i.split("list=", 1)[1] for i in network_view]  #Split the network network_view to find matches
-        splitNetworkView = [i.split("&", 1)[0] for i in splitNetworkView]
-        splitNetworkView = [i.upper() for i in splitNetworkView]
-        networkMatchIndex = [splitNetworkView.index(i) for i in genes]
-        updatedNetworkView = [network_view[i] for i in networkMatchIndex]
+        updatedNetworkView = splitNetworkViewUrls(genes, network_view)
         filtered_summary = pd.DataFrame({'GENE':genes})
-
         knetdict=dict(zip(knetgenes, knetscores)) # Map the genes to SNPs via a dictionary.
-        if len(genes) < 20:
-            print("Displaying knetscores for 5 genes.")
-            pprint.pprint(list(islice(knetdict.items(), 5)))
+        if len(genes) <= 5:
+            print("\n\nDisplaying knetscores for 5 genes.\n")
+            pprint.pprint(list(islice(knetdict.items(), len(knetdict.items()))))
         else:
-            print("Displaying a snippet of your knetscores for every gene:")
+            print("\n\nDisplaying the knetscore for the top 5 genes:\n")
             pprint.pprint(list(islice(knetdict.items(), 5)))
         ordered_score=[]
         for index, i in enumerate(genes):
@@ -145,22 +166,17 @@ def summary():
         filtered_summary[u'start_position'] = knetstart
         filtered_summary[u'network_view'] = updatedNetworkView
 
-        if len(updatedNetworkView) < 20:
-            print("These are your genepage URLS. They're also available in results.txt.")
-            for i in updatedNetworkView:
-                pprint.pprint(str(i))
-
-        print("Ordering genes based on KnetScore, one moment...\n")
+        print("\n\nOrdering genes based on KnetScore, one moment...\n")
         filtered_summary[u'knetscore'] = filtered_summary[u'knetscore'].astype(float)
         filtered_summary.sort_values('knetscore', ascending=False, inplace=True)
-        print("Writing results out now!")
+        print("Writing results out now...\n")
         if args.output is None:
             filtered_summary.to_csv("results.txt", sep="\t", index=False)
             print("We're Finished! Your results are in: {}/{}_output/results.txt".format(os.getcwd(), str(args.genes)[:-4]))
         else:
             filtered_summary.to_csv(args.output, sep="\t", index=False)
             print("We're Finished! Your results are in: {}".format(args.output))
-        print("\n\nIn total, {}/{} genes were returned by KnetMiner".format(len(genes), startingLen))
+        print("\n\nIn total, {}/{} genes were returned by KnetMiner.\n".format(len(genes), startingLen))
 
 
 def main():
