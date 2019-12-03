@@ -122,7 +122,6 @@ def summary():
         species = speciesDefine()
         resource.setrlimit(resource.RLIMIT_STACK, (resource.RLIM_INFINITY, resource.RLIM_INFINITY)) # Set stack limit to infinity, so we can use as much of our resources as needed; if needed
         print("\n\n\nPlease wait while I get your KnetMiner API URLs, this may take a while...")
-        counter, total = 0, 0
         for i in genes:
             link="http://knetminer.rothamsted.ac.uk/{}/genepage?list={}&keyword={}".format(species, i, keyw)
             network_view.append(link) # We don't need ot ensure the URL works at this stage as we'll filter by gene name later anyway. This will save time.
@@ -147,10 +146,16 @@ def summary():
 
         knetgenes, knetscores = list(genetable[u'ACCESSION']), list(genetable[u'SCORE'])
         knetchro, knetstart = list(genetable[u'CHRO']), list(genetable[u'START'])
-        genes = set(genesUpperList).intersection(knetgenes) # Only keep matching genes
+        genes_ordered = set(genesUpperList).intersection(knetgenes) # Only keep matching genes
+        genes_ordered = list(genes_ordered)
 
-        updatedNetworkView = splitNetworkViewUrls(genes, network_view)
-        filtered_summary = pd.DataFrame({'GENE':genes})
+        updatedNetworkView = splitNetworkViewUrls(genes_ordered, network_view)
+
+        filtered_summary = pd.DataFrame(columns=[u'ACCESSION'])
+        filtered_summary[u'ACCESSION'] = genes_ordered
+        filtered_summary = filtered_summary.merge(genetable, how = 'inner', on= [u'ACCESSION'])
+        filtered_summary[u'ACCESSION'] = filtered_summary[u'ACCESSION'].astype(str)
+
         knetdict=dict(zip(knetgenes, knetscores)) # Map the genes to SNPs via a dictionary.
         if len(genes) <= 5:
             print("\n\nDisplaying knetscores for 5 genes.\n")
@@ -158,23 +163,15 @@ def summary():
         else:
             print("\n\nDisplaying the knetscore for the top 5 genes:\n")
             pprint.pprint(list(islice(knetdict.items(), 5)))
-        ordered_score=[]
-        for index, i in enumerate(genes):
-            i=i.upper() #convert gene id to upper case to avoid sensitivity issues.
-            try:
-                ordered_score.append(knetdict[i])
-            except KeyError:
-                print("Gene " + i + " with index " + index + "not found in the KnetMiner dictionary")
-                pass # Skip any keys that shouldn't be present, though we should never arrive at this keyError anyway as we take care of this earlier when filtering the genes
 
-        filtered_summary[u'knetscore'] = ordered_score
-        filtered_summary[u'chromosome'] = knetchro
-        filtered_summary[u'start_position'] = knetstart
-        filtered_summary[u'network_view'] = updatedNetworkView
+        filtered_summary['Network View URL'] = updatedNetworkView
+
+        filtered_summary = filtered_summary.drop(filtered_summary.columns[[1, 7, 8]], axis=1)
+        filtered_summary.columns = ['Accession ID', 'Gene Name', 'Chromosome', 'Start position', 'TaxID', 'KnetScore', 'Network View URL']
 
         print("\n\nOrdering genes based on KnetScore, one moment...\n")
-        filtered_summary[u'knetscore'] = filtered_summary[u'knetscore'].astype(float)
-        filtered_summary.sort_values('knetscore', ascending=False, inplace=True)
+        filtered_summary[u'KnetScore'] = filtered_summary[u'KnetScore'].astype(float)
+        filtered_summary.sort_values('KnetScore', ascending=False, inplace=True)
         print("Writing results out now...\n")
         if args.output is None:
             filtered_summary.to_csv("results.txt", sep="\t", index=False)
@@ -182,7 +179,7 @@ def summary():
         else:
             filtered_summary.to_csv(args.output, sep="\t", index=False)
             print("We're Finished! Your results are in: {}".format(args.output))
-        print("\n\nIn total, {}/{} genes were returned by KnetMiner.\n".format(len(genes), startingLen))
+        print("\n\nIn total, {}/{} genes were returned by KnetMiner.\n".format(len(genes_ordered), startingLen))
 
 
 def main():
