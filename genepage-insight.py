@@ -52,6 +52,14 @@ def speciesDefine():
         species="riceknet"
     elif args.species.upper() == "WHEAT":
         species="wheatknet"
+    elif args.species.upper() == "WHEATKNET-BETA":
+        species="wheatknet-beta"
+    elif args.species.upper() == "GRAMIKNET":
+        species="gramiknet"
+    elif args.species.upper() == "ZYMOKNET":
+        species="zymoknet"
+    elif args.species.upper() == "NEUROKNET":
+        species="neuroknet"
     elif args.species.upper() == "ARABIDOPSIS" or species == "ARA":
         species="araknet"
     print("Chosen knet is " + species)
@@ -75,7 +83,7 @@ def knetScorer(genes, species, keyw):
         RETURNS: decoded KnetMiner JSON table """
 
     genestr=(",").join(genes)
-    link="http://knetminer.rothamsted.ac.uk/{}/genome?".format(species)
+    link="http://knetminer.rothamsted.ac.uk/ws/{}/genome?".format(species)
     parameters={"keyword":keyw, "list":genestr}
     r=requests.get(link, params=parameters)
     decoded = decode(r)
@@ -88,7 +96,7 @@ def queryAllKnetScorer(species, keyw):
 
     print("\n\nGoing to query knetminer for ALL returning results and then filter them\n")
     print("This may take a while, so please be patient\n")
-    link="http://knetminer.rothamsted.ac.uk/{}/genome?keyword={}".format(species, keyw)
+    link="http://knetminer.rothamsted.ac.uk/ws/{}/genome?keyword={}".format(species, keyw)
     print("The API request being performed is: {}".format(link))
     r=requests.get(link)
     decoded = decode(r)
@@ -123,7 +131,7 @@ def summary():
         resource.setrlimit(resource.RLIMIT_STACK, (resource.RLIM_INFINITY, resource.RLIM_INFINITY)) # Set stack limit to infinity, so we can use as much of our resources as needed; if needed
         print("\n\n\nPlease wait while I get your KnetMiner API URLs, this may take a while...")
         for i in genes:
-            link="http://knetminer.rothamsted.ac.uk/{}/genepage?list={}&keyword={}".format(species, i, keyw)
+            link="http://knetminer.rothamsted.ac.uk/ws/{}/genepage?list={}&keyword={}".format(species, i, keyw)
             network_view.append(link) # We don't need ot ensure the URL works at this stage as we'll filter by gene name later anyway. This will save time.
 
         #obtaining knetscores for genes
