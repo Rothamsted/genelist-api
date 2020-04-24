@@ -2,12 +2,13 @@
 This script will query the KnetMiner Knowledge Graph with a user provided gene list (one gene ID per line) and a user provided keyword file (one keyword per line). It returns the knetscore, genome location, and KnetMiner genepage URL for each user gene that can be associated with any of the keywords. The script was tested with upto 3000 wheat genes and 10 keywords. It currently only supports rice, wheat and araboidopsis. 
 
 ## Prerequisites
-The script requires Python3+ with following dependecies:
+The script requires Python3+ with following dependencies (last test with py3.8.2):
 
 * pandas
 * numpy
 * argparse
 * requests
+* resource (included in Linux/Unix but needed for Windows conda)
 
 * Python virtual environments, e.g. pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of the dependencies through pip. 
 
