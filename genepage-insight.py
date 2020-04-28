@@ -175,7 +175,7 @@ def summary():
         filtered_summary['Network View URL'] = updatedNetworkView
 
         filtered_summary = filtered_summary.drop(filtered_summary.columns[[1, 7, 8]], axis=1)
-        filtered_summary.columns = ['Accession ID', 'Gene Name', 'Chromosome', 'Start position', 'TaxID', 'KnetScore', 'Network View URL']
+        filtered_summary.columns = ['Accession ID', 'Gene Name', 'Chromosome', 'Start position', 'TaxID', 'KnetScore', 'KnetMiner genepage']
 
         print("\n\nOrdering genes based on KnetScore, one moment...\n")
         filtered_summary[u'KnetScore'] = filtered_summary[u'KnetScore'].astype(float)
