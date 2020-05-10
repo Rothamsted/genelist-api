@@ -185,8 +185,12 @@ def summary():
             filtered_summary.to_csv("results.txt", sep="\t", index=False)
             print("We're Finished! Your results are in: {}/{}_output/results.txt".format(os.getcwd(), str(args.genes)[:-4]))
         else:
-            filtered_summary.to_csv(args.output, sep="\t", index=False)
+            filtered_summary.to_csv(args.output, sep="\t", index=False, header=False)
             print("We're Finished! Your results are in: {}".format(args.output))
+            headerfile= open(args.out_header, "w")
+            headerfile.write("Accession ID,Gene Name,Chromosome,Start Position,Tax ID,KnetScore,KnetMiner genepage")
+            headerfile.close()
+            print("output header file in: {}".format(args.out_header))
         print("\n\nIn total, {}/{} genes were returned by KnetMiner.\n".format(len(genes_ordered), startingLen))
 
 
@@ -212,6 +216,7 @@ if __name__ == "__main__":
     parser.add_argument('-k', "--keywords", help="a plain text file containing description of phenotypes of interest line by line")
     parser.add_argument('-s', "--species", help="Choose from 3 species; rice, wheat, or arabidopsis. Type the name for the respective species i.e. arabidpsis for  (or ara) arabidpsis, rice for rice, etc.", type=str)
     parser.add_argument('-o', "--output", help="Specify the output file you'd like to save your file in. If not provided, it'll save itself in the same place where your gene list file is. Please enter the full path", type=str, required=False)
+    parser.add_argument('-oh', "--out_header", help="Name of the output header (optional) file.", type=str)
     args = parser.parse_args()
     main()
     exit
